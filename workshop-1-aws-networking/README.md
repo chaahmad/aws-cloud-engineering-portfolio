@@ -17,6 +17,8 @@ This lab builds the following network in VPC A (us-east-1). The diagram shows th
 | Private server | Private subnet, AZ1 | Own security group; reaches the internet through the NAT gateway |
 | Public server | Public subnet, AZ2 | 10.0.2.100; own security group; public IPv4 address |
 
+**Routing vs security groups vs NACLs**
+
 Routing decides the path a packet takes. A security group validates whether traffic is allowed to the resource. It only has allow rules and is stateful. A NACL permits or denies traffic at the subnet level. It is stateless.
 
 **Why I built it this way**
