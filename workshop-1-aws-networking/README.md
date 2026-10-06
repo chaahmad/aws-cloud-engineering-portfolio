@@ -110,4 +110,5 @@ I ran three tests to confirm the network works as designed.
 <img width="1796" height="943" alt="image" src="https://github.com/user-attachments/assets/89a6fc60-c07d-4a26-ad3e-5b2e7bf2d1d1" />
 
 **Next action:** I deleted rule 90 from both tabs and retested. The ping worked again, which shows the only change was rule 90 and removing it restored connectivity.
+
 <img width="529" height="197" alt="image" src="https://github.com/user-attachments/assets/d4be30e5-503c-4a37-b5a9-f02fed39d7d9" />
