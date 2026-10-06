@@ -17,6 +17,8 @@ This lab builds the following network in VPC A (us-east-1). The diagram shows th
 | Private server | Private subnet, AZ1 | Own security group; reaches the internet through the NAT gateway |
 | Public server | Public subnet, AZ2 | 10.0.2.100; own security group; public IPv4 address |
 
+Routing decides the path a packet takes. A security group validates whether traffic is allowed to the resource. It only has allow rules and is stateful. A NACL permits or denies traffic at the subnet level. It is stateless.
+
 **Why I built it this way**
 
 - **Two Availability Zones:** for availability, so the network spans more than one AZ.
@@ -102,7 +104,7 @@ I ran three tests to confirm the network works as designed.
 **Test 1, routing:** The resource map is correct, so routing is not the cause.
 <img width="1680" height="1031" alt="image" src="https://github.com/user-attachments/assets/bd8f95c9-6b4d-4a05-b20e-35a4d4771620" />
 
-**Test 2, security group:** **[CONFIRM]** The inbound rule allowing ICMP is in place, so nothing is missing. A security group has only allow rules, so it cannot produce a deny. It is not the cause.
+**Test 2, security group:** The inbound rule allowing ICMP is in place, so nothing is missing. A security group has only allow rules, so it cannot produce a deny. It is not the cause.
 <img width="1661" height="950" alt="image" src="https://github.com/user-attachments/assets/d106456c-717f-488d-90b5-3537278c8434" />
 
 **Test 3, NACL:** Rule 100 permits all traffic in both directions, but rule 90 denies ICMP. A NACL evaluates rules from the lowest number first and applies the first match, so rule 90 matched ICMP before rule 100 was reached. This is the cause.
@@ -112,3 +114,16 @@ I ran three tests to confirm the network works as designed.
 **Next action:** I deleted rule 90 from both tabs and retested. The ping worked again, which shows the only change was rule 90 and removing it restored connectivity.
 
 <img width="529" height="197" alt="image" src="https://github.com/user-attachments/assets/d4be30e5-503c-4a37-b5a9-f02fed39d7d9" />
+
+## Reflection
+
+### What I understand now
+- I now have a clear understanding of what makes a subnet public or private in AWS. It is decided by the route table, not the address range. A subnet is public if its route table sends 0.0.0.0/0 to an internet gateway.
+- Before this project, I was confused about how a NAT gateway works. A NAT gateway sits in a public subnet and lets private instances start connections to the internet. It replaces the instance's source address with its own private IP, the internet gateway maps that to the Elastic IP, and the reply is translated back. The internet cannot start a connection inward.
+- Routing and security filtering are separate requirements, and each can fail on its own. In my lab, the routes were correct, but the NACL deny rule still blocked the ping.
+- A security group is stateful and a NACL is stateless. The NACL applies whenever traffic enters or leaves a subnet, including between two subnets in the same VPC.
+- When troubleshooting, I check in order: routing, then the security group, then the NACL. A security group only has allow rules, so a deny can only come from the NACL.
+
+### What is still unclear
+
+I'm confident about the order of checks for traffic coming into my network (route table, then NACL, then security group). I'm not sure about the order on the way out, specifically whether the NACL or the route table comes first. I'd like help confirming it.
