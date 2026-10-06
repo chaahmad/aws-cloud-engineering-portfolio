@@ -27,6 +27,7 @@ This lab builds the following network in VPC A (us-east-1). The diagram shows th
 - **Route tables:** they direct traffic according to the routes in the table. Without a route, the traffic has nowhere to go.
 
 **Configuration Evidence**
+
 VPC
 <img width="1655" height="1028" alt="image" src="https://github.com/user-attachments/assets/56354721-8fb8-4434-85fc-8872d0b65e1c" />
 Public Subnet AZ1
@@ -38,7 +39,7 @@ Public Subnet AZ2
 Private Subnet AZ2
 <img width="1455" height="585" alt="image" src="https://github.com/user-attachments/assets/535e35e3-dfeb-4ec0-b7d1-4ead6c301062" />
 Public Route Table-Routes
-
+<img width="1344" height="317" alt="image" src="https://github.com/user-attachments/assets/62507246-8840-4cfc-9f5e-87839072ed3a" />
 Private Route Table-Routes
 <img width="1463" height="347" alt="image" src="https://github.com/user-attachments/assets/37d8417d-8402-4eae-9e78-45a8cb8f998b" />
 Private Route Table-Subnet associations
@@ -70,5 +71,12 @@ Instance in Private Server-General Details
 Instance in Private Server-Security Details
 <img width="1364" height="281" alt="image" src="https://github.com/user-attachments/assets/a5aef2fe-0c95-479f-8aed-ec22802a3433" />
 
+## Verification
+I ran three tests to confirm the network works as designed.
 
+| Test | From | To | Result | What it proves |
+|---|---|---|---|---|
+| 1 | My computer | Public server, public IP 52.55.148.239 | Worked | The public server is reachable from the internet and replies. The IGW, route table, NACL, and security group all permit it. |
+| 2 | Private server (AZ1) | Public server, private IP 10.0.2.100 | Worked | Instances in different subnets and AZs communicate over the VPC's local route. |
+| 3 | Private server (AZ1) | example.com | Worked | A private instance can start a connection to the internet through the NAT gateway and IGW, and the reply returns. DNS resolution also works. |
 
