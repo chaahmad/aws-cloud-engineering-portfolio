@@ -41,15 +41,13 @@ Public Subnet AZ2
 Private Subnet AZ2
 <img width="1455" height="585" alt="image" src="https://github.com/user-attachments/assets/535e35e3-dfeb-4ec0-b7d1-4ead6c301062" />
 Public Route Table-Routes
-<img width="1344" height="317" alt="image" src="https://github.com/user-attachments/assets/62507246-8840-4cfc-9f5e-87839072ed3a" />
+<img width="1355" height="314" alt="image" src="https://github.com/user-attachments/assets/9f985a7b-33f2-4eaa-a6ea-0a9958cfe340" />
+Public Route Table-Subnet associations
+<img width="1358" height="289" alt="image" src="https://github.com/user-attachments/assets/5209adc1-3d3f-40a9-859e-b86beaf98bc5" />
 Private Route Table-Routes
-<img width="1463" height="347" alt="image" src="https://github.com/user-attachments/assets/37d8417d-8402-4eae-9e78-45a8cb8f998b" />
+<img width="1346" height="332" alt="image" src="https://github.com/user-attachments/assets/d9aaa55f-d4cf-4718-ac62-40ee89bd526d" />
 Private Route Table-Subnet associations
-<img width="1456" height="292" alt="image" src="https://github.com/user-attachments/assets/1d36d5de-b82c-4649-ac5c-5dce2f85c0ad" />
-Private Route Table-Routes
-<img width="1454" height="320" alt="image" src="https://github.com/user-attachments/assets/5e16fee6-cce4-4450-874e-8a8fa04f20e5" />
-Private Route Table-Subnet associations
-<img width="1455" height="290" alt="image" src="https://github.com/user-attachments/assets/d325f123-b50f-490e-9fab-2633fcc7f430" />
+<img width="1355" height="283" alt="image" src="https://github.com/user-attachments/assets/e16080ea-17fc-45fc-b731-50934eb72f6b" />
 Internet Gateway
 <img width="1458" height="232" alt="image" src="https://github.com/user-attachments/assets/1c12c103-82b8-42c2-9cf4-5b371899ff8c" />
 NAT Gateway
