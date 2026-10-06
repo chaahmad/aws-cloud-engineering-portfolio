@@ -86,3 +86,28 @@ I ran three tests to confirm the network works as designed.
 #### Tests 2 and 3: private server to 10.0.2.100 and to example.com
 <img width="656" height="342" alt="image" src="https://github.com/user-attachments/assets/0f220e8a-deff-4e53-93ca-10acf09923a6" />
 
+## Troubleshooting
+**Fault introduced:** I added rule 90 to the NACL on both the inbound and outbound tabs: All ICMP - IPv4, 0.0.0.0/0, Deny. Rule 100 (allow all) was left unchanged.
+<img width="1418" height="861" alt="image" src="https://github.com/user-attachments/assets/90eb3177-a96b-4e71-85f3-8410abea3e17" />
+<img width="1455" height="856" alt="image" src="https://github.com/user-attachments/assets/a1c5f527-2438-48b3-9cea-b70e5de6f4d8" />
+
+**Symptom:** I pinged the public server (10.0.2.100) from the private server in AZ1 and it showed 100% packet loss.
+<img width="579" height="116" alt="image" src="https://github.com/user-attachments/assets/895412fc-b77b-487a-8f95-b5b745020fcb" />
+
+**Hypothesis:** 100% packet loss means something is dropping the packet along the path. It could be routing, a security group, or the NACL, so I checked each one in order:
+1. Routing: check the VPC resource map to confirm the subnets are associated with the right route tables and gateways.
+2. Security group: check for a missing allow rule.
+3. NACL: check for a rule that denies ICMP at the subnet level.
+   
+**Test 1, routing:** The resource map is correct, so routing is not the cause.
+<img width="1680" height="1031" alt="image" src="https://github.com/user-attachments/assets/bd8f95c9-6b4d-4a05-b20e-35a4d4771620" />
+
+**Test 2, security group:** **[CONFIRM]** The inbound rule allowing ICMP is in place, so nothing is missing. A security group has only allow rules, so it cannot produce a deny. It is not the cause.
+<img width="1661" height="950" alt="image" src="https://github.com/user-attachments/assets/d106456c-717f-488d-90b5-3537278c8434" />
+
+**Test 3, NACL:** Rule 100 permits all traffic in both directions, but rule 90 denies ICMP. A NACL evaluates rules from the lowest number first and applies the first match, so rule 90 matched ICMP before rule 100 was reached. This is the cause.
+<img width="1852" height="956" alt="image" src="https://github.com/user-attachments/assets/6dd4f902-c91c-4d9a-82fd-ef393f5d52b6" />
+<img width="1796" height="943" alt="image" src="https://github.com/user-attachments/assets/89a6fc60-c07d-4a26-ad3e-5b2e7bf2d1d1" />
+
+**Next action:** I deleted rule 90 from both tabs and retested. The ping worked again, which shows the only change was rule 90 and removing it restored connectivity.
+<img width="529" height="197" alt="image" src="https://github.com/user-attachments/assets/d4be30e5-503c-4a37-b5a9-f02fed39d7d9" />
