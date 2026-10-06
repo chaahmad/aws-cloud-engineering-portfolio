@@ -2,7 +2,7 @@
 Build a VPC with public and private subnets across two Availability Zones, test which instances can communicate, then deliberately break and troubleshoot blocked traffic. The goal is to gain a deeper understanding of, and be able to explain, what makes a subnet public or private, how a private instance reaches the internet, and how routing, security groups, and NACLs come together in the big picture.
 ## **Implementation**
 This lab builds the following network in VPC A (us-east-1). The diagram shows the layout, and the tables below list the configuration.
-<img width="1063" height="868" alt="image" src="https://github.com/user-attachments/assets/2cd4432d-762f-4bd8-bf14-63d62249855d" />
+<img width="1240" height="1014" alt="image" src="https://github.com/user-attachments/assets/2bfd1fd1-1d72-4dbe-8b71-303cd453da54" />
 | Component | Where | Details |
 |---|---|---|
 | VPC A | us-east-1 | 10.0.0.0/16 |
