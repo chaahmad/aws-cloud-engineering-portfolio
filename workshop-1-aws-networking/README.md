@@ -80,3 +80,8 @@ I ran three tests to confirm the network works as designed.
 | 2 | Private server (AZ1) | Public server, private IP 10.0.2.100 | Worked | Instances in different subnets and AZs communicate over the VPC's local route. |
 | 3 | Private server (AZ1) | example.com | Worked | A private instance can start a connection to the internet through the NAT gateway and IGW, and the reply returns. DNS resolution also works. |
 
+### Test 1: my computer to the public server's public IP
+<img width="547" height="249" alt="image" src="https://github.com/user-attachments/assets/697deee9-5e3b-44fd-bd64-7dc3dd56988e" />
+### Tests 2 and 3: private server to 10.0.2.100 and to example.com
+<img width="656" height="342" alt="image" src="https://github.com/user-attachments/assets/0f220e8a-deff-4e53-93ca-10acf09923a6" />
+
