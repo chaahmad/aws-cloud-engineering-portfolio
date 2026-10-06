@@ -127,3 +127,7 @@ I ran three tests to confirm the network works as designed.
 ### What is still unclear
 
 I'm confident about the order of checks for traffic coming into my network (route table, then NACL, then security group). I'm not sure about the order on the way out, specifically whether the NACL or the route table comes first. I'd like help confirming it.
+
+## Cleanup
+
+I deleted the EC2 instances, the VPC endpoint, the NAT gateway, and VPC A, which also removed its internet gateway, NACL, and route tables. I also deleted the prerequisite CloudFormation stack. Nothing from this lab remains.
