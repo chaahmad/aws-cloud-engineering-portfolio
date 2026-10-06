@@ -16,6 +16,7 @@ This lab builds the following network in VPC A (us-east-1). The diagram shows th
 | Network ACL (NACL) | Associated with all four subnets | Rule 100 allows all traffic, inbound and outbound |
 | Private server | Private subnet, AZ1 | Own security group; reaches the internet through the NAT gateway |
 | Public server | Public subnet, AZ2 | 10.0.2.100; own security group; public IPv4 address |
+
 **Why I built it this way**
 
 - **Two Availability Zones:** for availability, so the network spans more than one AZ.
