@@ -25,3 +25,50 @@ This lab builds the following network in VPC A (us-east-1). The diagram shows th
 - **Internet gateway (IGW):** the connecting point between the VPC and the internet. It gives resources that have a public IP a two-way path.
 - **NACL and security groups:** two layers of filtering. The NACL evaluates traffic at the subnet level, whereas a security group evaluates it at the resource level.
 - **Route tables:** they direct traffic according to the routes in the table. Without a route, the traffic has nowhere to go.
+
+**Configuration Evidence**
+VPC
+<img width="1655" height="1028" alt="image" src="https://github.com/user-attachments/assets/56354721-8fb8-4434-85fc-8872d0b65e1c" />
+Public Subnet AZ1
+<img width="1442" height="596" alt="image" src="https://github.com/user-attachments/assets/21620293-7380-4388-8e99-f4a868f06f18" />
+Private Subnet AZ1
+<img width="1466" height="584" alt="image" src="https://github.com/user-attachments/assets/2896f778-8c53-47c1-ac6e-11bd4a34f1de" />
+Public Subnet AZ2
+<img width="1455" height="578" alt="image" src="https://github.com/user-attachments/assets/7a0491ee-2e4e-4536-9efe-a04a05311c63" />
+Private Subnet AZ2
+<img width="1455" height="585" alt="image" src="https://github.com/user-attachments/assets/535e35e3-dfeb-4ec0-b7d1-4ead6c301062" />
+Public Route Table-Routes
+
+Private Route Table-Routes
+<img width="1463" height="347" alt="image" src="https://github.com/user-attachments/assets/37d8417d-8402-4eae-9e78-45a8cb8f998b" />
+Private Route Table-Subnet associations
+<img width="1456" height="292" alt="image" src="https://github.com/user-attachments/assets/1d36d5de-b82c-4649-ac5c-5dce2f85c0ad" />
+Private Route Table-Routes
+<img width="1454" height="320" alt="image" src="https://github.com/user-attachments/assets/5e16fee6-cce4-4450-874e-8a8fa04f20e5" />
+Private Route Table-Subnet associations
+<img width="1455" height="290" alt="image" src="https://github.com/user-attachments/assets/d325f123-b50f-490e-9fab-2633fcc7f430" />
+Internet Gateway
+<img width="1458" height="232" alt="image" src="https://github.com/user-attachments/assets/1c12c103-82b8-42c2-9cf4-5b371899ff8c" />
+NAT Gateway
+<img width="1455" height="350" alt="image" src="https://github.com/user-attachments/assets/7a5ad36c-8e60-4766-b6e8-506bd7dbc361" />
+NACL-Inbound Rules
+<img width="1447" height="327" alt="image" src="https://github.com/user-attachments/assets/f50ba2c0-37c0-4ae6-b8c5-01b2b68f62d8" />
+NACL-Outbound Rules
+<img width="1455" height="321" alt="image" src="https://github.com/user-attachments/assets/ff5f9294-57d3-4d02-b7fc-623e0793ba54" />
+NACL-Subnet Associations
+<img width="1454" height="365" alt="image" src="https://github.com/user-attachments/assets/9bf044ca-4b4d-4387-afaa-e642cb7028e6" />
+Security Group for public and private server-Inbound Rules
+<img width="1453" height="290" alt="image" src="https://github.com/user-attachments/assets/ad813f56-755a-4714-9227-34b2fd07681a" />
+Security Group for public and private server-Outbound Rules
+<img width="1449" height="286" alt="image" src="https://github.com/user-attachments/assets/193d39c8-8cb8-4a64-9d96-70308434246d" />
+Instance in Public Server-General Details
+<img width="1332" height="583" alt="image" src="https://github.com/user-attachments/assets/cb23afb9-4df6-4df6-8e53-ce38a69efa2e" />
+Instance in Public Server-Security Details
+<img width="1354" height="300" alt="image" src="https://github.com/user-attachments/assets/c69082c3-3693-45f1-8e49-0a10f83ef7e3" />
+Instance in Private Server-General Details
+<img width="1348" height="589" alt="image" src="https://github.com/user-attachments/assets/ce96c761-cfc5-4eb1-b9bf-f3e5fa77d249" />
+Instance in Private Server-Security Details
+<img width="1364" height="281" alt="image" src="https://github.com/user-attachments/assets/a5aef2fe-0c95-479f-8aed-ec22802a3433" />
+
+
+
