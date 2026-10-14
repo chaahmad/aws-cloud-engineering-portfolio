@@ -65,8 +65,8 @@ So far, I have verified that the ALB, its security group and listener, the targe
 client (Linux VM) sent an HTTP request to the ALB’s DNS name -> the traffic entered the ALB, which only accepts HTTP traffic on port 80 -> the listener accepted the HTTP request on port 80 and forwarded it to the target group -> the target group’s target is the web server, whose security group only accepts traffic from the load balancer -> the web server accepted the traffic and replied with HTTP 200 to the load balancer -> the ALB delivered the content to the client.
 
 ## Fault 1- stop the application service
-	• I stopped nginx on the web server and disabled it.
-	• From the client (Linux VM), I tested the web server with `curl -i my-alb-236131434.ca-central-1.elb.amazonaws.com` (Alb's dns name).
+I stopped nginx and disabled it.
+From the client (Linux VM), I tested the web server with `curl -i my-alb-236131434.ca-central-1.elb.amazonaws.com` (Alb's dns name).
 **Symptom**: I received 502 Bad Gateway, which means it reached the load balance, but ALB wasn’t able to get a valid response from the web server.
 <img width="665" height="237" alt="image" src="https://github.com/user-attachments/assets/3f046fd0-8c7d-470b-a4b2-f6407124c11f" />
 **Hypothesis**: since the request was able to reach the load balancer, the path from the client to the ALB works. Most likely the problem is in the web server, so I will check the following as part of my troubleshooting methodology :
@@ -130,7 +130,7 @@ The following two screenshots show that inbound rule is configured;
 **Verification**:
 The target’s health status is showing as healthy now.
 <img width="1530" height="339" alt="image" src="https://github.com/user-attachments/assets/eb14b547-5c4d-4099-bee3-ea3e0bce1103" />
-From the client machine (Linux VM), I tested the web server with` curl -i my-alb-236131434.ca-central-1.elb.amazonaws.com` (the ALB’s DNS name), and it responded with a ‘200’ code, which means the web server is now responding to the load balancer’s requests successfully.
+From the client machine (Linux VM), I tested the web server with `curl -i my-alb-236131434.ca-central-1.elb.amazonaws.com` (the ALB’s DNS name), and it responded with a ‘200’ code, which means the web server is now responding to the load balancer’s requests successfully.
 <img width="646" height="209" alt="image" src="https://github.com/user-attachments/assets/6d4e763f-27d6-42ed-a369-9f36cc28ae52" />
 
 ## Fault 3 - configure an incorrect health check path
@@ -171,4 +171,4 @@ Localhost received a 200 response from the web server. This confirmed that the w
 
 ### What I understand now
 
-I have much deeper understand of how load balancer, listener, target group and health check work and how the traffic flow from client to the web server. I've also gained more clear understand of security group and gained more expertise in troubleshooting and how and when to use Linux commands. 
+I now have a much deeper understanding of how the load balancer, listener, target group, and health check work, and how traffic flows from the client to the web server. I've also gained a clearer understanding of security groups, including the difference between the ALB security group and the web server security group. Before this project, I didn't know what the target health status values meant, except for "healthy", but now I understand what they mean. I also understand the health check settings configured for the target group and how the health check request process works. Additionally, I've gained more experience in troubleshooting, understanding various HTTP status codes, and knowing how and when to use Linux commands. For example, a stopped web server gave me a 502, a missing security group rule gave me a 504, and a wrong health check path made the target unhealthy while the client still got a 200.
