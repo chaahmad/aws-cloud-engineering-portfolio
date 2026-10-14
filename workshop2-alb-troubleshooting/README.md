@@ -64,6 +64,7 @@ This proves the ALB security group accepts traffic on TCP port 80, the listener 
 <img width="636" height="205" alt="image" src="https://github.com/user-attachments/assets/388ea01d-422d-43ea-a229-5ef34a3ee1fb" />
 
 However, I still need to check if the web server only accept traffic from ALB. From my client VM, I ran `curl -i -v <web server's public IP>`  against the web server’s public IP address on port 80.
+
 <img width="1531" height="639" alt="image" src="https://github.com/user-attachments/assets/625ecd32-5de9-4756-9774-57bac11b265f" />
 
 My client machine (Linux VM) was not able to establish connectivity with the web server, which proves that the web server’s security group is dropping traffic that doesn’t come from the load balancer.
