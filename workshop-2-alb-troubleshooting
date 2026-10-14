@@ -1,0 +1,12 @@
+## **Objective**
+The purpose of this project is to gain a deeper understanding of the load balancer, ALB listener, target group, and health check by troubleshooting three faults: (1) stopping the web server application service, (2) removing the web server security group’s inbound rule that allows traffic from the ALB, and (3) configuring an incorrect health check path.
+## **Implementation**
+I've built the atchitecture based on the following configuration:
+		○ VPC
+		○ Two public and private subnets across two availability zones
+		○ IGW
+		○ IGW attachment to VPC
+		○ Public route table and public route
+		○ Public subnet association to public route table
+		○ Private route table
+    ○ Private subnet association to private route table
