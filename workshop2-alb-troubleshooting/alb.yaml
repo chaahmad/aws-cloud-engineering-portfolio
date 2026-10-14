@@ -1,0 +1,246 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Application Load Balancer'
+
+Resources:
+# VPC
+  VPCA:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: '10.0.0.0/16'
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: 'VPCA'  
+# Public Subnet in AZ 1
+  PublicSubnet1A:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: '10.0.0.0/24'
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: 'PublicSubnet1A'
+# Private Subnet in AZ 1
+  PrivateSubnet1A:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: '10.0.1.0/24'
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: 'PrivateSubnet1A'
+# Public Subnet in AZ 2
+  PublicSubnet1B:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: '10.0.2.0/24'
+      AvailabilityZone: !Select [1, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: 'PublicSubnet1B'
+# Private Subnet in AZ 2
+  PrivateSubnet1B:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPCA
+      CidrBlock: '10.0.3.0/24'
+      AvailabilityZone: !Select [1, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: 'PrivateSubnet1B'
+
+# Internet Gateway
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: 'VPCA IGW'
+
+#Attach IGW to the VPC
+  AttachGateway:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPCA
+      InternetGatewayId: !Ref InternetGateway
+
+#Public Route Table
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPCA
+      Tags:
+        - Key: Name
+          Value: 'PublicRouteTable'
+
+#Public Route
+  PublicRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+#Public Subnet 1A Route Table Association
+  PublicSubnet1ARouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PublicSubnet1A
+      RouteTableId: !Ref PublicRouteTable
+
+#Public Subnet 1B Route Table Association
+  PublicSubnet1BRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PublicSubnet1B
+      RouteTableId: !Ref PublicRouteTable
+
+#Private Route Table
+  PrivateRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPCA
+      Tags:
+        - Key: Name
+          Value: 'PrivateRouteTable'
+
+#Private Subnet 1A Route Table Association
+  PrivateSubnet1ARouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PrivateSubnet1A
+      RouteTableId: !Ref PrivateRouteTable
+
+#Private Subnet 1B Route Table Association
+  PrivateSubnet1BRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PrivateSubnet1B
+      RouteTableId: !Ref PrivateRouteTable
+
+#Application Load Balancer
+  myLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    DependsOn: AttachGateway
+    Properties:
+      Name: my-alb
+      Type: application
+      Scheme: internet-facing
+      Subnets: 
+        - !Ref PublicSubnet1A
+        - !Ref PublicSubnet1B
+      SecurityGroups: 
+        - !Ref AlbSecurityGroup
+      Tags: 
+        - Key: Name
+          Value: "my-alb"
+
+#Target Group
+  myTargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      VpcId: !Ref VPCA
+      Protocol: HTTP
+      Port: 80
+      TargetType: instance
+      Targets:
+        - Id: !Ref WebServerInstance1A
+      HealthCheckEnabled: true 
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 6
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: '200'
+
+#Listener
+  myListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref myTargetGroup
+      LoadBalancerArn: !Ref myLoadBalancer
+      Protocol: HTTP
+      Port: 80
+
+#ALB Security Group
+  AlbSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow HTTP traffic to the ALB
+      VpcId: !Ref VPCA
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+#Web Server Security Group
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow HTTP traffic to the web server
+      VpcId: !Ref VPCA
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref AlbSecurityGroup
+
+#Web Server Instance
+  WebServerInstance1A:
+    Type: 'AWS::EC2::Instance'
+    DependsOn: 
+      - PublicRoute
+      - PublicSubnet1ARouteTableAssociation
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-0bf6dbeae330f5823
+      SubnetId: !Ref PublicSubnet1A
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGoup
+      IamInstanceProfile: !Ref InstanceProfile
+      Tags:
+        - Key: Name
+          Value: WebServerInstance1A
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum install -y nginx
+          systemctl start nginx
+          systemctl enable nginx
+          echo "hello world From Web Server 1A" > /usr/share/nginx/html/index.html
+
+#Remote login role
+  RemoteloginRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Path: '/'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service:
+                - 'ec2.amazonaws.com'
+            Action: 'sts:AssumeRole'
+
+#Instance Profile
+  InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref RemoteloginRole
