@@ -15,6 +15,9 @@ I built the architecture based on the following configuration:
   - Public subnet associations to the public route table
 - Private route table
   - Private subnet associations to the private route table
+- Application load balancer and its security group
+- Web server and its security group
+- IAM role and instance profile for Systems Manager (SSM) access to the web server
 
 <img width="1223" height="999" alt="image" src="https://github.com/user-attachments/assets/1e0a4bce-9cc2-442e-81a1-43321cd4f36c" />
 
