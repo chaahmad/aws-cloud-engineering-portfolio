@@ -311,3 +311,10 @@ Localhost received a 200 response from the web server. This confirmed that the w
 ### What I understand now
 
 I now have a much deeper understanding of how the load balancer, listener, target group, and health check work, and how traffic flows from the client to the web server. I've also gained a clearer understanding of security groups, including the difference between the ALB security group and the web server security group. Before this project, I didn't know what the target health status values meant, except for "healthy", but now I understand what they mean. I also understand the health check settings configured for the target group and how the health check request process works. Additionally, I've gained more experience in troubleshooting, understanding various HTTP status codes, and knowing how and when to use Linux commands. For example, a stopped web server gave me a 502, a missing security group rule gave me a 504, and a wrong health check path made the target unhealthy while the client still got a 200.
+
+## Troubleshooting reasoning
+
+Source ports 59900 and 19128 are for demonstration only. Temporary ports change with each connection.
+
+<img width="1134" height="386" alt="image" src="https://github.com/user-attachments/assets/e71b5d03-cc58-4efc-90d9-03a2649a9478" />
+
