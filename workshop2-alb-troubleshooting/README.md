@@ -320,3 +320,12 @@ Source ports 59900 and 19128 are for demonstration only. Temporary ports change 
 
 <img width="1134" height="386" alt="image" src="https://github.com/user-attachments/assets/e71b5d03-cc58-4efc-90d9-03a2649a9478" />
 
+### Investigation plan
+
+**Scenario:** NGINX returns 200 when tested locally, but the ALB target is unhealthy. I do not know what changed.
+
+| Possible explanation | Inspect/Test | Next step |
+| --- | --- | --- |
+| It could be that the health check settings I tested locally don't match the target group's actual health check configuration. | I would check the target health status details and look at the health check configuration. I would then run `curl -i` on the web server using the exact path and port from the health check. I saw the effect of a wrong health check path in Fault 3. | I would amend the health check configuration, or the local test, so both use the same path, port and success code. If the configuration isn't the issue, I would then check the security group. |
+| It could be that the web server's security group is missing an inbound rule for TCP traffic on port 80 from the ALB's security group. | I would check the web server's security group for an inbound rule that allows TCP port 80 from the ALB's security group. I tested this in Fault 2. | If the inbound rule is missing, I would add it to the security group. Otherwise, I would move on to inspecting the NACL rules. |
+| A NACL rule could be blocking the ALB's request to the web server, or the web server's reply back to the ALB. | Check the inbound and outbound rules in the network ACLs (NACLs) for the ALB's and the web server's subnets. This is a proposed test that hasn't been run yet. | If a NACL rule is blocking the traffic, I would edit it to allow the traffic. If the NACL isn't the issue, I will run `tail -f /var/log/nginx/access.log` to check the status it returns to the ALB's health checks, and `tail -f /var/log/nginx/error.log` to look for errors. |
