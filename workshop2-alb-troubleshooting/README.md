@@ -119,7 +119,7 @@ So far, I have verified that the ALB, its security group and listener, the targe
 
 ### Traffic flow summary from client to application
 
-client (Linux VM) sent an HTTP request to the ALB’s DNS name -> the traffic entered the ALB, whose security group allows inbouncd TCP traffic on port 80 -> the listener accepted the HTTP request on port 80 and forwarded it to the target group -> the target group’s target is the web server, whose security group only accepts traffic from the load balancer -> the web server accepted the traffic and replied with HTTP 200 to the load balancer -> the ALB delivered the content to the client.
+client (Linux VM) sent an HTTP request to the ALB’s DNS name -> the traffic entered the ALB, whose security group allows inbound TCP traffic on port 80 -> the listener accepted the HTTP request on port 80 and forwarded it to the target group -> the ALB opened a separate connection to the target, the web server, whose security group allows TCP port 80 only from the ALB’s security group -> the web server accepted the traffic and replied with HTTP 200 to the ALB -> the ALB delivered the content to the client.
 
 ## Fault 1- stop the application service
 
