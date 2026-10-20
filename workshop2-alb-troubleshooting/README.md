@@ -314,6 +314,8 @@ I now have a much deeper understanding of how the load balancer, listener, targe
 
 ## Troubleshooting reasoning
 
+### Traffic Diagram
+
 Source ports 59900 and 19128 are for demonstration only. Temporary ports change with each connection.
 
 <img width="1134" height="386" alt="image" src="https://github.com/user-attachments/assets/e71b5d03-cc58-4efc-90d9-03a2649a9478" />
