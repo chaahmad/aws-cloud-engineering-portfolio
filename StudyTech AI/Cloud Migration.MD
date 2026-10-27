@@ -36,7 +36,7 @@ The following two tables contain the costs calculated by me, along with the cost
 
 ## **Check 2: Security**
 
-While the proposal have certain security in place, such as VPC endpoint, network segmentation between public and private subnet and security groups, I believe it should also have NACL. NACL would be an additional security measure to the architecture that act as a security checkpoint for traffic at the subnet level. By default, NACLs allow all inbound and outbound traffic and we should implement NACL for HTTPS traffic.
+While the proposal has certain security in place, such as a VPC endpoint, network segmentation between public and private subnets, and security groups, I believe it should also have NACLs. NACLs would serve as an additional layer of security as part of a defence-in-depth mechanism. By default, NACLs allow all inbound and outbound traffic, and we should implement NACLs for HTTPS traffic.
 
 ## **Check 3: Backup**
 
